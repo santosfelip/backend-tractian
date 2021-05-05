@@ -1,61 +1,38 @@
 import { ParamSchema } from 'express-validator';
-import UserService from '../../../../modules/users/service';
+import CompanyService from '../../../../modules/companies/service';
 import RouterRequest from '../../../../libraries/RouterRequest';
-export default class UserValidator {
-    public static addUser() {
+
+export default class CompanyValidator {
+    public static addCompany() {
         const schema: Record<string, ParamSchema> = {
-            'name.first': {
+            name: {
                 in: 'body',
                 notEmpty: true,
                 isString :true
             },
-            'name.last': {
-                in: 'body',
-                notEmpty: true,
-                isString :true
-            },
-            'contact.email': {
+            cnpj: {
                 in: 'body',
                 notEmpty: true,
                 isString :true,
-                isEmail: true,
                 custom: {
-                    errorMessage: 'E-mail already in use',
-                    options: async (email:String) => {
-                        const listUsers = await UserService.filterUser({ 'contact.email': email });
+                    errorMessage: 'CNPJ already in use',
+                    options: async (cnpj:String) => {
+                        const listCompanies = await CompanyService.filterCompany({ cnpj : cnpj });
 
-                        if(listUsers.length) {
+                        if(listCompanies.length) {
                             return Promise.reject();
                         } else {
                             return Promise.resolve();
                         }
                     }
                 }
-            },
-            'contact.phone_number': {
-                in: 'body',
-                notEmpty: true,
-                isString :true
-            },
-            'contact.password': {
-                in: 'body',
-                isString: true,
-                notEmpty: true,
-                isLength: {
-                    options: { min: 8 },
-                }
-            },
-            'access.isAdmin': {
-                in: 'body',
-                isBoolean: true,
-                notEmpty: true
             }
         }
 
         return RouterRequest.checkSchema(schema);
     }
 
-    public static getUser() {
+    public static getCompany() {
         const schema: Record<string, ParamSchema> = {
             id: {
                 in: 'params',
@@ -67,7 +44,7 @@ export default class UserValidator {
         return RouterRequest.checkSchema(schema);
     }
 
-    public static updateUser() {
+    public static updateCompany() {
 
         const schema: Record<string, ParamSchema> = {
             id: {
