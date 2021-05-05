@@ -5,8 +5,14 @@ import UserValidator from './validators/UserValidator';
 import CompanyValidator from './validators/CompanyValidator';
 import CompanyUnitsValidator from './validators/CompanyUnitsValidator';
 import MachineUnitsValidator from './validators/MachineUnitsValidator';
+import AuthValidator from './validators/AuthValidator';
 
 export const routes = {
+    //rota de Autenticação
+    'POST /auth': {
+        path: 'AuthController.getAccessToken',
+        middlewares: AuthValidator.getAccessToken()
+    },
 
     //rotas de usuario
     'POST /user/register': {
@@ -78,11 +84,5 @@ export const routes = {
     'PUT /company/units/machine/:id': {
         path: 'MachineUnitsController.update',
         middlewares: MachineUnitsValidator.updateMachineUnit()
-    },
-
-    // //rota de Autenticação
-    // 'POST /auth': {
-    //     path: 'AuthController.getAccessToken',
-    //     middlewares: [AuthValidator.getAccessToken()]
-    // }
+    }
 }

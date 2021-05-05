@@ -52,7 +52,7 @@ export default class UserValidator {
             }
         }
 
-        return RouterRequest.checkSchema(schema);
+        return RouterRequest.checkSchema(schema, false);
     }
 
     public static getUser() {

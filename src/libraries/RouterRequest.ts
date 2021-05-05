@@ -1,17 +1,21 @@
 import express from 'express';
 import RouterResponse from './RouterResponse';
 import { checkSchema, ParamSchema, Result, ValidationError, validationResult } from "express-validator";
-//import isAuthenticated from '../middlewares/isAuthenticated';
+import isAuthenticated from '../middlewares/isAuthenticated';
 
 
 export default class RouterRequest {
     
-    public static checkSchema(schema: Record<string, ParamSchema>) {
+    public static checkSchema(schema: Record<string, ParamSchema>, privateRouter: boolean = true) {
         
         const listValidators: Array<any> = [
             checkSchema(schema),
             RouterRequest.validate
         ];
+
+        if(privateRouter) {
+            listValidators.unshift(isAuthenticated);
+        }
 
         return listValidators;
     }

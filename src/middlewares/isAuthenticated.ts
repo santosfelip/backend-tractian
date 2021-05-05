@@ -14,7 +14,7 @@ export default function isAuthenticated(req: Request, res: Response, next: NextF
 	const [type, token] = authHeader.split(' ');
     
     if(type !== 'Bearer') {
-        return RouterResponse.error('JWT invalido', res);
+        return RouterResponse.error('JWT invalid', res);
     }
 
 	try {
@@ -22,6 +22,6 @@ export default function isAuthenticated(req: Request, res: Response, next: NextF
 
 		return next();
 	} catch (error) {
-		return RouterResponse.error('JWT invalido', res);
+		return RouterResponse.error('JWT invalid', res);
 	}
 }
